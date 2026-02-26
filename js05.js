@@ -9,44 +9,45 @@
 
       Filename: js05.js
 */
-
-window.addEventListener("load", setupGallery);
 window.addEventListener("load", createLightbox);
 
 function createLightbox() {
-   //Lightbox Container
-   let lightbox = document.getElementById("lightbox");
+   let lightBox = document.getElementById("lightbox");
 
    // Parts of the lightbox
+   let currentImg = 1;
+   let timeID;
 
    // Design Lightbox Title
-   lightbox.appendChild(lbTitle);
    let lbTitle = document.createElement("h1");
+   lbTitle.id = "lbTitle";
    lbTitle.textContent = lightboxTitle;
+   lightBox.appendChild(lbTitle);
    
    //Desgin Lightbox slide counter
-   lightbox.appendChild(lbCounter);
    let lbCounter = document.createElement("div");
-   let currentImg =1;
+   lbCounter.id = "lbCounter";
    lbCounter.textContent = currentImg + " / " +imgCount;
+   lightBox.appendChild(lbCounter);
    
    //Design Lightbox Previous slide Button
-   lightbox.appendChild(lbPrev);
    let lbPrev = document.createElement("div");
+   lbPrev.id = "lbPrev";
    lbPrev.innerHTML = "&#9664;";
    lbPrev.onclick = showPrev;
+   lightBox.appendChild(lbPrev);
    
    //Design Lightbox Next slide Button
-   lightbox.appendChild(lbNext);
    let lbNext = document.createElement("div");
+   lbNext.id = "lbNext";
    lbNext.innerHTML = "&#9654;";
    lbNext.onclick = showNext;
+   lightBox.appendChild(lbNext);
    
    //Design Lightbox Play-Pause slide Button
-   lightbox.appendChild(lbPlay);
    let lbPlay = document.createElement("div");
+   lbPlay.id = "lbPlay";
    lbPlay.innerHTML = "&#9199;";
-   let timeID;
    lbPlay.onclick = function() {
       if (timeID) {
          //Stop the Slideshow
@@ -57,10 +58,12 @@ function createLightbox() {
       timeID = window.setInterval(showNext,1500);
       }
    }
+   lightBox.appendChild(lbPlay);
    
    //Design The lightbox images conatiner 
-   lightbox.appendChild(lbImages);
    let lbImages = document.createElement("div");
+   lbImages.id = "lbImages";
+   lightBox.appendChild(lbImages);
 
    //Add images from the imgFiles array to the container
    for (let i = 0; i < imgCount; i++) {
@@ -90,8 +93,24 @@ function createLightbox() {
       let figureBox = document.createElement("figure");
       overlay.appendChild(figureBox);
 
-      document.body.appendChild(overlay);
-      }  
+      let overlayImage = this.cloneNode("true");
+      figureBox.appendChild(overlayImage);
+      
+      let overlayCaption = document.createElement("figcaption");
+      overlayCaption.textContent = this.alt;
+      figureBox.appendChild(overlayCaption);
+
+      let closeBox = document.createElement("div");
+      closeBox.id = "lbOverlayClose";
+      closeBox.innerHTML="&times;";
+      closeBox.onclick = function() {
+         document.body.removeChild(overlay);
+      }
+      overlay.appendChild(closeBox);
+      document.body.appendChild(overlay); 
+ 
+      } 
+      
 }
 function setupGallery() {
    let imageCount = imgFiles.length;
